@@ -58,11 +58,11 @@ coll = COLLECT(
 )
 app = BUNDLE(
    coll,
-   name=cfg['xl8']['APP_NAME']+'.app',
+   name=cfg['app']['APP_NAME']+'.app',
    #icon='xl8_icon.png',
    bundle_identifier='io.github.gonewest818.xl8',
    info_plist={
-       'CFBundleShortVersionString': cfg['xl8']['APP_VERSION'],
+       'CFBundleShortVersionString': cfg['app']['APP_VERSION'],
        'LSUIElement': True
    }
 )

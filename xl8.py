@@ -17,14 +17,14 @@ else:
 
 cfg = configparser.ConfigParser()
 cfg.read(os.path.join(APP_PATH, 'config.ini'))
-APP_NAME = cfg['xl8']['APP_NAME']
-APP_VERSION = cfg['xl8']['APP_VERSION']
+APP_NAME = cfg['app']['APP_NAME']
+APP_VERSION = cfg['app']['APP_VERSION']
 
 
 def about():
     dialog = QMessageBox(QMessageBox.NoIcon, "About...", APP_NAME)
     dialog.setInformativeText(f"""
-<i>Convert text into Military Alphabet codes</i>
+<i>Convert text to Military Alphabet and Morse Code</i>
 <p>v{APP_VERSION}</p>
 Neil Okamoto<a href=mailto:neil.okamoto@gmail.com><neil.okamoto@gmail.com></a><br>
 <a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a><br>
@@ -93,13 +93,73 @@ def make_military(text):
             converted.append(alpha[c])
     return ''.join(converted)
 
-def convert_dialog():
+def make_morse(text):
+    alpha = {
+        'a': '•-  ',
+        'b': '-•••  ',
+        'c': '-•-•  ',
+        'd': '-••  ',
+        'e': '•  ',
+        'f': '••-•  ',
+        'g': '--•  ',
+        'h': '••••  ',
+        'i': '••  ',
+        'j': '•---  ',
+        'k': '-•-  ',
+        'l': '•-••  ',
+        'm': '--  ',
+        'n': '-•  ',
+        'o': '---  ',
+        'p': '•--•  ',
+        'q': '--•-  ',
+        'r': '•-•  ',
+        's': '•••  ',
+        't': '-  ',
+        'u': '••-  ',
+        'v': '•••-  ',
+        'w': '•--  ',
+        'x': '-••-  ',
+        'y': '-•--  ',
+        'z': '--••  ',
+        '1': '•----  ',
+        '2': '••---  ',
+        '3': '•••--  ',
+        '4': '••••-  ',
+        '5': '•••••  ',
+        '6': '-••••  ',
+        '7': '--•••  ',
+        '8': '---••  ',
+        '9': '----•  ',
+        '0': '-----  ',
+        ' ': '\n\n'
+    }
+    converted = []
+    for c in text.lower():
+        if c in alpha:
+            converted.append(alpha[c])
+    return ''.join(converted)
+
+def convert_military():
     loader = QUiLoader()
     loader.setWorkingDirectory(QDir(APP_PATH))
     dialog = loader.load(os.path.join(APP_PATH, 'xl8_dialog.ui'))
+    dialog.setWindowTitle('Text to Military Alphabet...')
 
     def translate(text):
         converted = make_military(text)
+        dialog.output.setPlainText(converted)
+
+    dialog.input.textChanged.connect(translate)
+    return dialog.exec()
+
+def convert_morse():
+    loader = QUiLoader()
+    loader.setWorkingDirectory(QDir(APP_PATH))
+    dialog = loader.load(os.path.join(APP_PATH, 'xl8_dialog.ui'))
+    dialog.setWindowTitle('Text to Morse Code...')
+
+    def translate(text):
+        converted = make_morse(text)
         dialog.output.setPlainText(converted)
 
     dialog.input.textChanged.connect(translate)
@@ -123,9 +183,13 @@ def main():
 
     menu = QMenu()
 
-    convert_action = QAction("Convert...")
-    convert_action.triggered.connect(convert_dialog)
-    menu.addAction(convert_action)
+    conv_military_action = QAction("Military Alphabet...")
+    conv_military_action.triggered.connect(convert_military)
+    menu.addAction(conv_military_action)
+
+    conv_morse_action = QAction("Morse Code...")
+    conv_morse_action.triggered.connect(convert_morse)
+    menu.addAction(conv_morse_action)
 
     menu.addSeparator()
 
