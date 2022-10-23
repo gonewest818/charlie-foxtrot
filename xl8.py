@@ -1,8 +1,38 @@
+import os
+import sys
 import darkdetect
 
+from PySide6.QtCore import QDir
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QColor, QAction
 from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
 from PySide6.QtUiTools import QUiLoader
+
+# clipboard = QApplication.clipboard()
+# clipboard.setText("rgb(%d, %d, %d)")
+
+if getattr(sys, 'frozen', False):
+   # https://stackoverflow.com/questions/404744/determining-application-path-in-a-python-exe-generated-by-pyinstaller
+   APP_PATH = os.path.abspath(os.path.join(sys._MEIPASS, "../Resources"))
+else:
+   APP_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+ABOUT = \
+"""
+<b>
+  X-Ray Lima 8
+</b>
+(v0.1.0)
+<br>
+Convert text into Military Alphabet codes
+<p>
+Neil Okamoto
+<br>
+<a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a>
+"""
+
+def about():
+    QMessageBox.about(None, "About X-Ray Lima 8", ABOUT)
 
 def svg_icon(svg):
     # inspired by https://stackoverflow.com/questions/15123544/change-the-color-of-an-svg-in-qt
@@ -18,38 +48,63 @@ def svg_icon(svg):
     painter.end()
     return QIcon(pixmap)
 
-# clipboard = QApplication.clipboard()
+def make_military(text):
+    alpha = {
+        'a': 'Alpha ',
+        'b': 'Bravo ',
+        'c': 'Charlie ',
+        'd': 'Delta ',
+        'e': 'Echo ',
+        'f': 'Foxtrot ',
+        'g': 'Golf ',
+        'h': 'Hotel ',
+        'i': 'India ',
+        'j': 'Juliet ',
+        'k': 'Kilo ',
+        'l': 'Lima ',
+        'm': 'Mike ',
+        'n': 'November ',
+        'o': 'Oscar ',
+        'p': 'Papa ',
+        'q': 'Quebec ',
+        'r': 'Romeo ',
+        's': 'Sierra ',
+        't': 'Tango ',
+        'u': 'Uniform ',
+        'v': 'Victor ',
+        'w': 'Whiskey ',
+        'x': 'X-ray ',
+        'y': 'Yankee ',
+        'z': 'Zulu ',
+        '1': 'One ',
+        '2': 'Two ',
+        '3': 'Three ',
+        '4': 'Four ',
+        '5': 'Five ',
+        '6': 'Six ',
+        '7': 'Seven ',
+        '8': 'Eight ',
+        '9': 'Niner ',
+        '0': 'Zero ',
+        ' ': '\n\n'
+    }
+    converted = []
+    for c in text.lower():
+        if c in alpha:
+            converted.append(alpha[c])
+    return ''.join(converted)
 
-# dialog = QColorDialog()
+def convert_dialog():
+    loader = QUiLoader()
+    loader.setWorkingDirectory(QDir(APP_PATH))
+    dialog = loader.load(os.path.join(APP_PATH, 'xl8_dialog.ui'))
 
-# def copy_color_hex():
-#     if dialog.exec():
-#         color = dialog.currentColor()
-#         clipboard.setText(color.name())
+    def translate(text):
+        converted = make_military(text)
+        dialog.output.setPlainText(converted)
 
-# def copy_color_rgb():
-#     if dialog.exec():
-#         color = dialog.currentColor()
-#         clipboard.setText("rgb(%d, %d, %d)" % (
-#             color.red(), color.green(), color.blue()
-#         ))
-
-# def copy_color_hsv():
-#     if dialog.exec():
-#         color = dialog.currentColor()
-#         clipboard.setText("hsv(%d, %d, %d)" % (
-#             color.hue(), color.saturation(), color.value()
-#         ))
-
-def about():
-    QMessageBox.about(None, "About X-Ray Lima 8",
-"""
-<p>X-Ray Lima 8 (v0.1.0)
-<br>Convert text into Military Alphabet codes
-<p>Neil Okamoto
-<br><a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a>
-""")
-
+    dialog.input.textChanged.connect(translate)
+    return dialog
 
 def main():
     app = QApplication([])
@@ -58,23 +113,27 @@ def main():
     icon = svg_icon("xl8.svg")
     tray = QSystemTrayIcon()
     tray.setIcon(icon)
-    tray.setVisible(True)
+
+    convert = convert_dialog()
 
     menu = QMenu()
+
+    convert_action = QAction("Convert...")
+    convert_action.triggered.connect(convert.show)
+    menu.addAction(convert_action)
+
+    menu.addSeparator()
 
     about_action = QAction("About...")
     about_action.triggered.connect(about)
     menu.addAction(about_action)
 
-    convert_action = QAction("Convert...")
-    #convert_action.triggered.connect(copy_color_rgb)
-    menu.addAction(convert_action)
-        
     quit_action = QAction("Quit")
-    quit_action.triggered.connect(QApplication.quit)
+    quit_action.triggered.connect(app.quit)
     menu.addAction(quit_action)
 
     tray.setContextMenu(menu)
+    tray.setVisible(True)
 
     app.exec()
 
