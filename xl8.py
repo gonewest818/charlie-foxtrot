@@ -1,3 +1,4 @@
+import configparser
 import os
 import sys
 import darkdetect
@@ -16,14 +17,18 @@ if getattr(sys, 'frozen', False):
 else:
    APP_PATH = os.path.dirname(os.path.abspath(__file__))
 
+cfg = configparser.ConfigParser()
+cfg.read(os.path.join(APP_PATH, 'config.ini'))
+APP_VERSION = cfg['xl8']['APP_VERSION']
 
 ABOUT = \
-"""
+f"""
 <b>
   X-Ray Lima 8
 </b>
-(v0.1.0)
-<br>
+<p>
+Version {APP_VERSION}
+<p>
 Convert text into Military Alphabet codes
 <p>
 Neil Okamoto
@@ -104,22 +109,20 @@ def convert_dialog():
         dialog.output.setPlainText(converted)
 
     dialog.input.textChanged.connect(translate)
-    return dialog
+    return dialog.exec()
 
 def main():
     app = QApplication([])
     app.setQuitOnLastWindowClosed(False)
 
-    icon = svg_icon("xl8.svg")
+    icon = svg_icon(os.path.join(APP_PATH, "xl8.svg"))
     tray = QSystemTrayIcon()
     tray.setIcon(icon)
-
-    convert = convert_dialog()
 
     menu = QMenu()
 
     convert_action = QAction("Convert...")
-    convert_action.triggered.connect(convert.show)
+    convert_action.triggered.connect(convert_dialog)
     menu.addAction(convert_action)
 
     menu.addSeparator()
