@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="9 71 40 24" width="40" height="24">
+  <defs/>
+  <g id="Canvas_1" fill="none" fill-opacity="1" stroke="none" stroke-dasharray="none" stroke-opacity="1">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="10" y="90" width="24" height="2" fill="black"/>
+        <rect x="10" y="90" width="24" height="2" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_7">
+        <path d="M 14 90 L 16 82 L 22 82 L 24 90" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_11">
+        <ellipse cx="40.09145" cy="75.18214" rx="6.3085610769075" ry="3.00000479370569" fill="black"/>
+        <ellipse cx="40.09145" cy="75.18214" rx="6.3085610769075" ry="3.00000479370569" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_15">
+        <path d="M 16 84.2 L 30 84.2 L 29.683772 84.14868 L 35.683772 86.14868 C 35.78574 86.18267 35.89252 86.2 36 86.2 L 44 86.2 C 44.552285 86.2 45 85.75228 45 85.2 L 45 83.2 C 45 82.64772 44.552285 82.2 44 82.2 L 36 82.2 L 36.316228 82.25132 L 30.316228 80.25132 C 30.212272 80.21666 30.103327 80.19933 29.99375 80.20002 L 9.99375 80.32502 C 9.443915 80.32846 9 80.77515 9 81.325 L 9 83.2 C 9 83.75228 9.447715 84.2 10 84.2 L 16 84.2 C 16.552285 84.2 17 83.75228 17 83.2 C 17 82.64772 16.552285 82.2 16 82.2 L 10 82.2 L 11 83.2 L 11 81.325 L 10.00625 82.32498 L 30.00625 82.19998 L 29.683772 82.14868 L 35.683772 84.14868 C 35.78574 84.18267 35.89252 84.2 36 84.2 L 44 84.2 L 43 83.2 L 43 85.2 L 44 84.2 L 36 84.2 L 36.316228 84.25132 L 30.316228 82.25132 C 30.21426 82.21733 30.107482 82.2 30 82.2 L 16 82.2 C 15.447715 82.2 15 82.64772 15 83.2 C 15 83.75228 15.447715 84.2 16 84.2 Z" fill="black"/>
+      </g>
+    </g>
+  </g>
+</svg>
