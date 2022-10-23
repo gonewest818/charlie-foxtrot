@@ -27,7 +27,7 @@ def about():
 <i>Convert text to Military Alphabet and Morse Code</i>
 <p>v{APP_VERSION}</p>
 Neil Okamoto<a href=mailto:neil.okamoto@gmail.com><neil.okamoto@gmail.com></a><br>
-<a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a><br>
+<a href=https://github.com/gonewest818/charlie-foxtrot>https://github.com/gonewest818/charlie-foxtrot</a><br>
 """)
     efilt = EventFilter()
     dialog.installEventFilter(efilt)
@@ -193,7 +193,7 @@ def main():
 
     menu.addSeparator()
 
-    about_action = QAction("About...")
+    about_action = QAction(f"About {APP_NAME}...")
     about_action.triggered.connect(about)
     menu.addAction(about_action)
 
