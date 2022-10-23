@@ -11,16 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Translating to Military Alphabet</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Translate to Military Alphabet:</string>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QLineEdit" name="input"/>
    </item>
