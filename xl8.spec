@@ -58,7 +58,7 @@ coll = COLLECT(
 )
 app = BUNDLE(
    coll,
-   name='xl8.app',
+   name=cfg['xl8']['APP_NAME']+'.app',
    #icon='xl8_icon.png',
    bundle_identifier='io.github.gonewest818.xl8',
    info_plist={

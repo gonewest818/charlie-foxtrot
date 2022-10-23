@@ -3,13 +3,11 @@ import os
 import sys
 import darkdetect
 
-from PySide6.QtCore import QDir
-from PySide6.QtGui import QIcon, QPixmap, QPainter, QColor, QAction
+from PySide6.QtCore import Qt, QDir, QEvent, QObject
+from PySide6.QtGui import QIcon, QPixmap, QPainter, QColor, QAction, QKeyEvent, QKeySequence
 from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
 from PySide6.QtUiTools import QUiLoader
 
-# clipboard = QApplication.clipboard()
-# clipboard.setText("rgb(%d, %d, %d)")
 
 if getattr(sys, 'frozen', False):
    # https://stackoverflow.com/questions/404744/determining-application-path-in-a-python-exe-generated-by-pyinstaller
@@ -19,25 +17,21 @@ else:
 
 cfg = configparser.ConfigParser()
 cfg.read(os.path.join(APP_PATH, 'config.ini'))
+APP_NAME = cfg['xl8']['APP_NAME']
 APP_VERSION = cfg['xl8']['APP_VERSION']
 
-ABOUT = \
-f"""
-<b>
-  X-Ray Lima 8
-</b>
-<p>
-Version {APP_VERSION}
-<p>
-Convert text into Military Alphabet codes
-<p>
-Neil Okamoto
-<br>
-<a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a>
-"""
 
 def about():
-    QMessageBox.about(None, "About X-Ray Lima 8", ABOUT)
+    dialog = QMessageBox(QMessageBox.NoIcon, "About...", APP_NAME)
+    dialog.setInformativeText(f"""
+<i>Convert text into Military Alphabet codes</i>
+<p>v{APP_VERSION}</p>
+Neil Okamoto<a href=mailto:neil.okamoto@gmail.com><neil.okamoto@gmail.com></a><br>
+<a href=https://github.com/gonewest818/xl8>https://github.com/gonewest818/xl8</a><br>
+""")
+    efilt = EventFilter()
+    dialog.installEventFilter(efilt)
+    dialog.exec()
 
 def svg_icon(svg):
     # inspired by https://stackoverflow.com/questions/15123544/change-the-color-of-an-svg-in-qt
@@ -111,6 +105,14 @@ def convert_dialog():
     dialog.input.textChanged.connect(translate)
     return dialog.exec()
 
+class EventFilter(QObject):
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            keyEvent = QKeyEvent(event)
+            if keyEvent.matches(QKeySequence.Quit):
+                return True
+        return False
+
 def main():
     app = QApplication([])
     app.setQuitOnLastWindowClosed(False)
@@ -138,6 +140,8 @@ def main():
     tray.setContextMenu(menu)
     tray.setVisible(True)
 
+    efilt = EventFilter()
+    app.installEventFilter(efilt)
     app.exec()
 
 
